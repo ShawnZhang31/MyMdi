@@ -170,9 +170,21 @@ bool MdiChild::maybeSave ()
         box.setWindowTitle (tr("多文档编辑器"));
         box.setText (tr("是否保存对“%1”的更改").arg(userFriendlyCurrentFile ()));
         box.setIcon (QMessageBox::Warning);
-        //TODO 添加两个判定按钮
+
+        QPushButton *yesBtn= box.addButton (tr("是"),QMessageBox::YesRole);
+        box.addButton (tr("否"),QMessageBox::NoRole);
+        QPushButton *cancleBtn=box.addButton (tr("取消"),QMessageBox::RejectRole);
+
+        box.exec ();
+
+        if(box.clickedButton ()==yesBtn)
+            return save();
+        else if(box.clickedButton ()==cancleBtn)
+            return false;
 
     }
+
+    return true;
 }
 
 
