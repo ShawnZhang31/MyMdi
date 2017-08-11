@@ -59,12 +59,17 @@ private slots:
 
     void on_actionAboutQt_triggered();
 
+protected:
+    void closeEvent(QCloseEvent *event);    //关闭窗口是读取窗口设置信息
+
 private:
     QAction *actionSeparator;       //间隔器
     MdiChild *activeMdiChild();     //活动窗口
     MdiChild *createMdiChild();     //创建子窗口
     QMdiSubWindow *findMdiChild(const QString &fileName);   //查找子窗口
     QSignalMapper *windowMapper;        //信号映射器
+    void readSettings();            //读取窗口设置
+    void writeSettings();           //写入窗口设置
 };
 
 #endif // MAINWINDOW_H

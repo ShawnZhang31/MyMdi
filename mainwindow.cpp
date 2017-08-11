@@ -3,6 +3,7 @@
 #include<QMdiSubWindow>
 #include<QFileDialog>
 #include<QSignalMapper>
+#include<QCloseEvent>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -219,7 +220,8 @@ void MainWindow::on_actionSaveAs_triggered()
  *****************************/
 void MainWindow::on_actionExit_triggered()
 {
-    //TODO:退出操作
+
+    qApp->closeAllWindows ();
 }
 
 /*****************************
@@ -227,7 +229,10 @@ void MainWindow::on_actionExit_triggered()
  *****************************/
 void MainWindow::on_actionUndo_triggered()
 {
-    //TODO:SLOT：撤销操作
+
+    if(activeMdiChild ())
+        activeMdiChild ()->undo ();
+
 }
 
 /*****************************
@@ -235,7 +240,8 @@ void MainWindow::on_actionUndo_triggered()
  *****************************/
 void MainWindow::on_actionRedo_triggered()
 {
-    //TODO:SLOT：恢复操作
+    if(activeMdiChild ())
+        activeMdiChild ()->redo ();
 }
 
 /*****************************
@@ -243,7 +249,8 @@ void MainWindow::on_actionRedo_triggered()
  *****************************/
 void MainWindow::on_actionCut_triggered()
 {
-    //TODO:SLOT：剪切操作
+    if(activeMdiChild ())
+        activeMdiChild ()->cut ();
 }
 
 /*****************************
@@ -324,4 +331,24 @@ void MainWindow::on_actionAbout_triggered()
 void MainWindow::on_actionAboutQt_triggered()
 {
 //TODO:SLOT：关于QT操作
+}
+
+void MainWindow::readSettings ()
+{
+
+}
+
+void MainWindow::closeEvent (QCloseEvent *event)
+{
+    ui->mdiArea->closeAllSubWindows ();
+    if(ui->mdiArea->currentSubWindow ())
+    {
+        event->ignore();
+    }
+    else
+    {
+        writeSettings();
+        event->accept ();
+    }
+
 }
